@@ -1,0 +1,15 @@
+FROM ubuntu:24.04
+
+ARG DEBIAN_FRONTEND=noninteractive
+ARG BUILD_PACKAGES="git wget"
+
+RUN apt update && \
+    apt install --yes $BUILD_PACKAGES python3 python3-pip && \
+    pip3 install --break-system-packages torch==2.9.1 torchvision==0.24.1 --index-url https://download.pytorch.org/whl/cpu && \
+    pip3 install --break-system-packages ftfy==6.3.1 regex==2025.11.3 tqdm==4.67.1 && \
+    pip3 install --break-system-packages git+https://github.com/openai/CLIP.git && \
+    cd /tmp && \
+    git clone https://github.com/seqeralabs/nf-training-intro.git && \
+    cp -p nf-training-intro/bin/classify.py /usr/local/bin/ && \
+    rm -rf nf-training-intro && \
+    apt remove --purge --yes $BUILD_PACKAGES

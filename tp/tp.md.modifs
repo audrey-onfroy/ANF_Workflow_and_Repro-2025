@@ -1,0 +1,865 @@
+# Connexion to IFB cluster
+
+There is two ways for connectiong to IFB cluster: SSH and Open on demand.
+
+- SSH
+
+  1. First you need to upload your public key to <https://my.cluster.france-bioinformatique.fr/manager2/login>
+  2. Then execute the following command line (replace `mylogin` by your IFB cluster login that is available on your IFB account):
+
+```bash
+ssh -X -o ServerAliveInterval=60 -l mylogin core.cluster.france-bioinformatique.fr
+```
+
+  - Command line explanation:
+    - `-X`: enable X11 forwarding (for GUI applications)
+    - `-o ServerAliveInterval=60`: Avoid timeout by sending every 60 seconds a message to SSH server
+    - `-l mylogin`: define the acount to use
+
+
+You can find more information on IFB website: <https://my.cluster.france-bioinformatique.fr/manager2/login>
+
+
+
+- Open on demand
+
+You can find more information on IFB website: <https://ifb-elixirfr.gitlab.io/cluster/doc/software/openondemand/>
+
+# Connexion to compute node 
+
+1. Open a session on a compute node:
+```bash
+srun --account=2521_wf4bioinfo --pty bash
+```
+
+2. Load nextflow in your environment
+
+```bash
+module load nextflow/24.10.4
+module load fastqc/0.12.1
+module load multiqc/1.13
+```
+
+3. Display the version of Nextflow
+
+```bash
+nextflow -v
+```
+
+4. Create and go to your working directory 
+```bash
+mkdir /shared/projects/2521_wf4bioinfo/participants/$USER
+cd /shared/projects/2521_wf4bioinfo/participants/$USER
+```
+
+5. Uncompress training data
+```bash
+unzip /shared/projects/2521_wf4bioinfo/course-material/atelier-nextflow/TP_Part1.gz
+
+```
+
+6. Test MultiQC and FastQC on the _fastq.gz_ file
+```bash
+bash fastqc.sh ./data/*_R{1,2}.fastq.gz
+bash multiqc.sh
+
+```
+
+
+
+→ Now you are ready to start
+
+
+# Objectives 
+
+- The goal of the exercices is to build a Nextflow pipeline for FASTQ quality control check.
+
+- To do this we gonna use tools: FastQC and MultiQC.
+
+- First we are going to build a minimal workflow that involves inputs, process and outputs
+
+- Input is the _fastq.gz_ file
+
+<img src="images/DAG.png">
+
+# Understand input and output 
+
+- FastQC
+    - input: 
+        - *_\_R{1,2}.fastq.gz_ with paired files
+    - output: 
+        - *\_R{1,2}.zip_ and *_\_R{1,2}.html_
+        - _versions.txt_
+
+- MultiQC
+    - Input: 
+        - FastQC output (*_\_R{1,2}.html_) & _versions.txt_
+        - config file (_assets/multiqc\_config.yml_)
+    - Output:
+        - _multiqc\_data/_
+        - _multiqc\_report.html_
+        - _versions.txt_
+
+# Workflow tree
+
+- We will use Bash and module to execute the pipeline
+
+- We need 5 files
+
+    - _main.nf_
+    - _nextflow.config_
+    - _modules/fastqc.nf_
+    - _modules/multiqc.nf_
+    - _conf/base.config_
+
+- First, create this subdirectories and empty files
+
+<details>
+<summary>Click to see an example solution</summary>
+
+::: boxed
+```bash
+mkdir conf modules 
+touch main.nf nextflow.config conf/base.config modules/fastqc.nf modules/multiqc.nf
+```
+:::
+</details>
+
+
+# Main script: _main.nf_
+
+1. We will first create the main from a skeleton 
+
+→ [Workflow skeleton in Nextflow documentation](https://nextflow.io/docs/latest/workflow.html)
+
+<details>
+<summary>Click to see an example solution</summary>
+
+::: boxed
+```groovy
+// Insert here include declarations
+
+workflow Quality_Checker{ // The name is used for sub-workflow
+
+    [take]: // Optional ; use for sub-workflow
+
+    [main]: // Process
+
+    [emit]: // Optional ; use for sub-workflow
+
+}
+```
+:::
+</details>
+<br />
+
+2. Then we include nextflow modules (_fastqc.nf_ and _multiqc.nf_)
+
+→ [Include declaration in Nextflow documentation](https://nextflow.io/docs/latest/reference/syntax.html#include)
+
+<details>
+<summary>Click to see an example solution</summary>
+
+::: boxed
+```groovy
+include { FASTQC  } from './modules/fastqc'
+include { MULTIQC } from './modules/multiqc'
+```
+:::
+</details>
+
+
+# Main script: _main.nf_
+
+Final version of the _main.nf_ script:
+
+<details>
+<summary>Click to see the solution</summary>
+
+::: boxed
+```groovy
+include { FASTQC  } from './modules/fastqc'
+include { MULTIQC } from './modules/multiqc'
+
+
+workflow Quality_Checker {
+
+    main:
+
+        FASTQC() 
+        MULTIQC()
+}
+```
+:::
+</details>
+
+   
+# Module FastQC: _modules/fastqc.nf_
+
+1. We will first create the process from a skeleton<br/>
+→ [Process in Nextflow documentation](https://nextflow.io/docs/latest/process.html)
+
+<details>
+<summary>Click to see an example solution</summary>
+
+::: boxed
+```groovy
+//include
+
+process FASTQC{ 
+    [directive]
+
+    [input]: 
+
+    [output]:
+
+    [script|exec]:
+
+}
+```
+:::
+</details>
+
+2. We will copy the fastqc.sh in the script section
+3. Report une input of the process<br/>
+→ [Inputs in Nextflow documentation](https://nextflow.io/docs/latest/process.html#inputs)
+4. Report the output<br/>
+→ [Outputs in Nextflow documentation](https://nextflow.io/docs/latest/process.html#outputs)
+
+<details>
+<summary>Click to see an help</summary>
+
+::: boxed
+```groovy
+process FASTQC{
+    input:
+    path(input_fastqc)
+
+    output:
+    path(result_fastqc)
+
+    script:
+    """
+    ...
+    """
+}
+```
+:::
+</details>
+
+# Module FastQC: _modules/fastqc.nf_
+
+Final version of the _modules/fastqc.nf_ script:
+
+<details>
+<summary>Click to see a solution</summary>
+
+::: boxed
+```groovy
+process FASTQC {
+
+  input:
+  path(fastqs)
+  
+  output:
+  path("*_fastqc.{zip,html}"), emit: results        // emit: catched the result with a name in the workflow file
+  path("versions.txt")       , emit: versions
+
+  
+ 
+  script:
+    """
+    echo \$(fastqc --version) > versions.txt  # Here we the \$ to use the bash $ to execute fastqc in a bash 
+    fastqc -q --threads 1 ${fastqs}           # Here ${fastqc} is a nextlow variable who refer to the input of this process
+    """
+}
+```
+:::
+
+
+# Module MultiQC: _modules/multiqc.nf_
+
+
+1. We will first create the process from a skeleton<br/>
+→ [Process in Nextflow documentation](https://nextflow.io/docs/latest/process.html)
+
+<details>
+<summary>Click to see an example solution</summary>
+
+::: boxed
+```groovy
+//include
+
+process MULTIQC{ 
+    [directive]
+
+    [input]: 
+
+    [output]:
+
+    [script|exec]:
+
+}
+```
+:::
+</details>
+
+2. We will copy the _modules/fastqc.sh_ in the script section
+3. Report une input of the process<br/>
+→ [Inputs in Nextflow documentation](https://nextflow.io/docs/latest/process.html#inputs)
+4. Report the output<br/>
+→ [Outputs in Nextflow documentation](https://nextflow.io/docs/latest/process.html#outputs)
+
+<details>
+<summary>Click to see an help</summary>
+
+::: boxed
+```groovy
+process MULTIQC{
+    input:
+    path(output_fastqc)
+
+    output:
+    path(result_mutliqc)
+
+    script:
+    """
+    ...
+    """
+}
+```
+:::
+</details>
+
+
+# Module MultiQC: _modules/multiqc.nf_
+
+Final version of the _modules/multiqc.nf_ script:
+
+<details>
+<summary>Click to see a solution</summary>
+
+::: boxed
+```groovy
+process MULTIQC {
+
+  input:
+  path(multiqc_config)
+  path(results)         // Here we use in input the output of FastQC but we don't use them explicitly,\
+  // in fact multiqc will work in the current repository, and the file in input are 'link' \
+  // in the current repository. MultiQC will work on the result of fastqc who are now in the current folder.
+
+  output:
+  path "*multiqc_report.html", emit: report
+  path "*_data"              , emit: data
+  path "*_plots"             , optional:true, emit: plots
+  path "versions.txt"        , emit: versions
+
+  script:
+  """
+  multiqc --version > versions.txt 
+  multiqc --force $multiqc_config .
+  """
+
+}
+```
+:::
+</details>
+
+
+# Module MultiQC Extra part stub
+
+In Nextflow, the stub section of a process allows you to simulate its execution without actually running the script. Instead, it creates empty files that represent the expected outputs of the process. This is useful for testing the pipeline's structure and flow without waiting for each step to complete. It's especially helpful during development—such as when working on a laptop or when the process involves long runtimes—unless you're using a small dataset.
+
+We can do this on the Multiqc process. We now that : 
+
+- Output are :
+    - *_\_data_
+    - _versions.txt_
+    - *_multiqc\_report.html_
+
+If in a section stub you create this fake files and folder, you can use `-stub` in the command line you can simulate the execution
+
+# Module MultiQC Extra part stub
+
+<details>
+<summary>Click to see a solution</summary>
+
+::: boxed
+```groovy
+nextflow run main.nf -stub
+```
+
+
+```groovy
+process MULTIQC {
+
+  input:[...]
+
+  output:
+  path "*multiqc_report.html", emit: report
+  path "*_data"              , emit: data
+  path "*_plots"             , optional:true, emit: plots
+  path "versions.txt"        , emit: versions
+
+  script: [...]
+
+  stub:
+  """
+  multiqc --version > versions.txt 
+  touch "multiqc_report.html"
+  mkdir multiqc_data
+  """
+
+}
+```
+
+
+:::
+</details>
+
+# Main start 
+
+Now we have :
+- a fastqc module
+- a multiqc module
+- a main
+
+In order to use the program, we must input the FASTQ files. To do so, we must modify the main.nf and add an input process.
+<https://nextflow.io/docs/latest/reference/channel.html#fromfilepairs>
+
+<details>
+<summary>Click to see an help</summary>
+
+::: boxed
+```groovy
+workflow Quality_Checker {
+    input_ch = Channel.fromFilePairs("./data/*_R{1,2}.fastq.gz")
+}
+```
+
+```groovy
+process test {
+    output:
+    path("*.*"), emit: toto
+
+    script:
+    """
+    echo test > log.txt
+    """
+}
+
+workflow {
+    test()
+    ch_res = test.out.toto
+}
+```
+
+:::
+</details>
+
+# Main solution
+
+<details>
+<summary>Click to see a solution</summary>
+
+::: boxed
+```groovy
+include { FASTQC  } from './modules/fastqc'
+include { MULTIQC } from './modules/multiqc'
+
+workflow Quality_Checker{
+
+    fastqs =  Channel.fromFilePairs("./data/*_R{1,2}.fastq.gz")
+    multiqc_config = Channel.fromPath('./assets/multiqc_config.yml')
+
+    main:
+
+        FASTQC(fastqs) 
+        MULTIQC(multiqc_config,FASTQC.out.results)
+}
+```
+
+
+:::
+</details>
+
+# Running
+
+You can now run your new pipeline with this :
+
+```groovy
+nextflow run main.nf 
+```
+
+You will obtain this in a few seconds. : 
+
+```groovy
+
+ N E X T F L O W   ~  version 25.04.2
+
+Launching `main.nf` [elated_albattani] DSL2 - revision: 1bcd3227bd
+
+executor >  local (3)
+[1d/bc147e] process > FASTQC (1)  [100%] 2 of 2 ✔
+[ef/e9d1fb] process > MULTIQC (1) [100%] 1 of 1 ✔
+
+```
+
+If you want to access the working directory of the Multiqc process, for example, you can do this:
+You can do this:
+```bash
+
+cd work/ef/
+ls 
+
+```
+you can find a repository who start by e9d1fb, e9d1fbaf8f663a792c7a13d05ab715
+
+# Input
+
+We now have a functional workflow, but the inputs are written in hard.
+
+`params.input` is a nextflow variable who use the flag in the command line for example : 
+
+`nextflow run main.nf --input './data/*_R{1,2}.fastq.gz' `
+
+Use params.input to implement a more flexible workflow.
+
+<details>
+<summary>Click to see a solution</summary>
+
+::: boxed
+```groovy
+include { FASTQC  } from './modules/fastqc'
+include { MULTIQC } from './modules/multiqc'
+
+workflow Quality_Checker{
+
+    fastqs =  Channel.fromFilePairs(params.fastqc_input)
+    multiqc_config = Channel.fromPath('./assets/multiqc_config.yml')
+
+    main:
+
+        FASTQC(fastqs) 
+        MULTIQC(multiqc_config,FASTQC.out.results)
+}
+```
+
+
+:::
+</details>
+
+# PublishDir
+
+You have a flexible workflow, but you don't have the results from this pipeline.
+
+To choose the location of your programme you can use the `publishDir` directive : <https://nextflow.io/docs/edge/reference/process.html#publishdir>
+
+You can try to implement this functionnality.
+
+<details>
+<summary>Click to see an example</summary>
+
+::: boxed
+```groovy
+process test {
+    publishDir "${params.outDir}/", mode: 'copy', saveAs: {filename -> 
+    if filename =="log.txt" return "test_$filename"
+    else null }
+
+    output:
+    path("*.*"), emit: toto
+
+    script:
+    """
+    echo test > log.txt
+    """
+}
+```
+
+Here the output are save in the params.outDir.
+`nextflow run main.nf --outDir ./result`
+
+:::
+</details>
+
+# PublishDir solution
+
+<details>
+<summary>Click to see FastQC solution</summary>
+
+::: boxed
+```groovy
+process FASTQC {
+  publishDir "${params.outDir}/$sampleId", mode: 'copy'
+
+  input:
+  tuple val(sampleId), path(fastqs)
+  
+  output:
+  path("*_fastqc.{zip,html}"), emit: results
+  path("versions.txt")       , emit: versions
+
+  
+ 
+  script:
+    """
+    echo \$(fastqc --version) > versions.txt
+    fastqc -q --threads 1 ${fastqs}
+    """
+}
+
+```
+
+Here the output are save in the params.outDir.
+
+`nextflow run main.nf --intput_fastqc './data/*_R{1,2}.fastq.gz' --outDir ./result`
+
+:::
+</details>
+
+<details>
+<summary>Click to see MultiQC solution</summary>
+
+::: boxed
+```groovy
+process MULTIQC {
+  publishDir "${params.outDir}/multiqc", mode: 'copy', saveAs: {
+    filename -> 
+    if (filename.contains(".html")) return 'multiqc_report.html'
+    else if (filename == "versions.txt") return filename
+    else return null
+    }
+
+  input:
+  path(multiqc_config)
+  path(results)
+
+  output:
+  path "*multiqc_report.html", emit: report
+  path "*_data"              , emit: data
+  path "*_plots"             , optional:true, emit: plots
+  path "versions.txt"        , emit: versions
+  [...]
+}
+
+
+```
+
+:::
+</details>
+
+# Config file
+
+You can store default value like outDir in the nextflow.config file for example.
+
+<https://nextflow.io/docs/edge/config.html>
+
+<details>
+<summary>Click to see an exemple of solution</summary>
+
+::: boxed
+```groovy
+params {
+    fastqc_input = null
+
+    outDir = "$projectDir/results"
+}
+```
+:::
+</details>
+
+# Config file 
+
+You can use labels in your processes to share configurations. For example, you may have multiple processes, some of which use a simple resource and others of which use multiple resources. You can define two labels:
+```groovy
+process{
+    withLabel: little_prog {
+        cpus = 1
+        memory = 4.GB
+    }
+    withLabel: big_prog {
+        cpus = 16
+        memory = 64.GB
+    }
+}
+```
+
+```groovy
+process FASTQC {
+    label "big_prog"
+
+    [...]
+}
+
+process MULTIQC {
+    label 'little_prog'
+
+    [...]
+}
+```
+
+# Profiles
+
+Profiles are selected pre-configuration like you work on a cluster or on your laptop the localisation of your annotation or program or specific configuration like memory and cpu available. You can split configuration in different files with the `includeConfig` function.
+
+<https://nextflow.io/docs/edge/config.html#config-profiles>
+
+# Profiles Cluster
+
+
+
+Your cluster can have different schedulers, such as SLURM, PBS, ... . Nextflow does the configuration for developers, but you must specify this. We will create a cluster profile in nextflow.config.
+
+<https://nextflow.io/docs/latest/executor.html#slurm>
+
+
+:::{.columns}
+:::{.col50}
+```groovy
+profiles {
+    cluster {
+        includeConfig './conf/cluster.config'
+    }
+}
+``` 
+nextflow.config
+:::
+:::{.col50}
+```groovy
+process{
+    executor = 'slurm'
+    queue = 'fast'
+}
+```
+You can overload variable in the cluster config file to use more CPU ... 
+cluster.config
+:::
+:::
+
+# Profiles Conda
+
+You can use conda environnement in your process nextflow
+<https://nextflow.io/docs/latest/conda.html>
+<https://nextflow.io/docs/latest/reference/config.html#conda>
+
+In the best Practices of the documentation, it is recommanted to create a conda profile in a configuration file ; like the cluster part we will create the next config file : 
+
+:::{.columns}
+:::{.col50}
+```groovy
+profiles {
+    conda {
+        includeConfig './conf/conda.config'
+    }
+}
+``` 
+nextflow.config
+:::
+:::{.col50}
+```groovy
+conda{
+    cacheDir="$params.condaCacheDir"?: $projectDir // specify the localization \
+    // of the conda env creation 
+    createTimeout = "1 h"
+    enabled = 'true'
+}
+
+process {
+    withLabel:fastqc{ conda = "$projectDir/recipes/conda/fastqc.yml"}
+    withLabel:multiqc{ conda = "$projectDir/recipes/conda/multiqc.yml"}
+}
+```
+conda.config
+
+You can add these label in the process and test with the conda process (think to disable your environnement with fastqc and multiqc or `module purge`)
+
+```bash
+nextflow run main.nf -profile cluster,conda --fastqc_input './data/*'
+```
+:::
+:::
+
+# Profiles Singularity
+
+You can use conda environnement in your process nextflow
+<https://nextflow.io/docs/latest/container.html#singularity>
+<https://nextflow.io/docs/latest/reference/config.html#config-singularity>
+
+In the best Practices of the documentation, it is recommanted to create a singularity profile in a configuration file ; like the cluster part we will create the next config file : 
+
+:::{.columns}
+:::{.col50}
+```groovy
+profiles {
+    singularity {
+        includeConfig './conf/singularity.config'
+    }
+}
+``` 
+nextflow.config
+:::
+:::{.col50}
+```groovy
+singularity {
+  enabled = true
+  autoMounts = true
+  runOptions = (params.geniac.containers?.singularityRunOptions ?: '')
+}
+
+process {
+    withLabel:fastqc{ conda = "$projectDir/recipes/conda/fastqc.sif"}
+    withLabel:multiqc{ conda = "$projectDir/recipes/conda/multiqc.sif"}
+}
+```
+singularity.config
+
+You can add these label in the process and test with the singularity process (think to disable your environnement with fastqc and multiqc or `module purge`)
+
+```bash
+nextflow run main.nf -profile cluster,conda --fastqc_input './data/*'
+```
+:::
+:::
+
+# Metrics
+
+```groovy
+
+// From nf-core
+timeline {
+  enabled = true
+  overwrite = true
+  file = "${params.summaryDir}/trace/timeline.html"
+}
+report {
+  enabled = true
+  overwrite = true
+  file = "${params.summaryDir}/trace/report.html"
+}
+trace {
+  enabled = true
+  raw = true
+  overwrite = true
+  fields = 'process,task_id,hash,native_id,module,container,tag,name,status,exit,submit,start,complete,duration,realtime,%cpu,%mem,rss,vmem,peak_rss,peak_vmem,rchar,wchar,syscr,syscw,read_bytes,write_bytes,attempt,workdir,scratch,queue,cpus,memory,disk,time,env'
+  file = "${params.summaryDir}/trace/trace.txt"
+}
+dag {
+  enabled = true
+  overwrite = true
+  file = "${params.summaryDir}/trace/DAG.pdf"
+}
+```
+
+nextflow.config 
+
+# Example Curie pipeline 
+
+<https://github.com/bioinfo-pf-curie/>
+
+<https://github.com/bioinfo-pf-curie/raw-qc>
+
+<https://github.com/bioinfo-pf-curie/geniac-demo-dsl2>
+
+<https://geniac.readthedocs.io/en/version-3.6.0/>

@@ -1,0 +1,153 @@
+<style>
+
+body {
+    font-family: Futura, sans-serif;
+    max-width: 60em;
+    ;
+}
+
+p {
+    text-align: left;
+    font-size: large;
+}
+
+a {
+
+    color: purple;
+
+}
+
+#TOC {
+    color: purple;
+    font-size: 1.25em;
+}
+
+h1 {
+    /* this em is relative to the size of  */
+    font-size: 2em;
+    font-weight: bold;
+    color: rgb(66, 0, 66);
+    text-align: left;
+    padding-top: 1%;
+    border-top: 1px solid rgb(66, 0, 66);
+}
+
+h2 {
+    font-size: 1.25em;
+    font-weight: bold;
+    color: rgb(94, 0, 94);
+    /* font-style: italic;  */
+    text-align: left;
+    margin: 0;
+    margin-top: 1%;
+}
+
+h3 {
+    font-size: 1.25em;
+    font-weight: bold;
+    font-style: italic;
+    color: rgb(114, 0, 114);
+    /* text-decoration: underline; */
+    text-align: left;
+    margin-top: 1%;
+}
+
+h3::before {
+    content: "- ";
+    font-weight: bold;
+    /* Optional: makes the arrow bold */
+}
+
+code {
+    background-color: rgb(245, 245, 245);
+    /* font-size: 1.4em; */
+}
+
+pre {
+    font-size: 1.1em;
+    background-color: rgb(245, 245, 245);
+    overflow-y: auto;
+    min-width: 60em;
+    padding: 1%;
+}
+
+
+/* 
+details[open]:hover {
+    cursor:auto;
+} */
+
+details summary:hover {
+    cursor: pointer;
+}
+
+img {
+    max-height: 300px !important;
+}
+
+table td {
+    vertical-align: middle;
+}
+
+figcaption {
+    font-size: 0.8em !important;
+    font-style: italic !important;
+}
+
+.subtitle {
+    font-style: italic !important;
+    font-size: 1.75em;
+    text-align: center !important;
+}
+
+.date {
+    font-size: 0.8em !important;
+}
+
+.title {
+    font-size: 2em;
+    font-weight: bold;
+    text-align: center;
+}
+
+.sourceCode {
+    background-color: rgb(245, 245, 245);
+    /* max-width: max-content; */
+}
+
+.boxed {
+    padding: 1%;
+    margin: 2%;
+    border: solid 1px black;
+}
+
+.redblock {
+    background-color: lightpink;
+    padding: 2%;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.yellowblock {
+    background-color: rgb(255, 247, 202);
+    margin: 1px 0 1px 0;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    padding: 1%;
+}
+
+.redtxt {
+    color: red;
+    font-weight: bold;
+}
+
+.columns {
+    align-items: center;
+    vertical-align: top;
+}
+
+#maxcode {
+    max-height: 500px;
+    overflow: auto;
+}
+
+</style>

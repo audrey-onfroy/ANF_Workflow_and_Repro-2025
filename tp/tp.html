@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Containers</title>
+  <style>
+html {
+color: #1a1a1a;
+background-color: #fdfdfd;
+}
+body {
+margin: 0 auto;
+max-width: 36em;
+padding-left: 50px;
+padding-right: 50px;
+padding-top: 50px;
+padding-bottom: 50px;
+hyphens: auto;
+overflow-wrap: break-word;
+text-rendering: optimizeLegibility;
+font-kerning: normal;
+}
+@media (max-width: 600px) {
+body {
+font-size: 0.9em;
+padding: 12px;
+}
+h1 {
+font-size: 1.8em;
+}
+}
+@media print {
+html {
+background-color: white;
+}
+body {
+background-color: transparent;
+color: black;
+font-size: 12pt;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3, h4 {
+page-break-after: avoid;
+}
+}
+p {
+margin: 1em 0;
+}
+a {
+color: #1a1a1a;
+}
+a:visited {
+color: #1a1a1a;
+}
+img {
+max-width: 100%;
+}
+svg {
+height: auto;
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+margin-top: 1.4em;
+}
+h5, h6 {
+font-size: 1em;
+font-style: italic;
+}
+h6 {
+font-weight: normal;
+}
+ol, ul {
+padding-left: 1.7em;
+margin-top: 1em;
+}
+li > ol, li > ul {
+margin-top: 0;
+}
+blockquote {
+margin: 1em 0 1em 1.7em;
+padding-left: 1em;
+border-left: 2px solid #e6e6e6;
+color: #606060;
+}
+code {
+font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+font-size: 85%;
+margin: 0;
+hyphens: manual;
+}
+pre {
+margin: 1em 0;
+overflow: auto;
+}
+pre code {
+padding: 0;
+overflow: visible;
+overflow-wrap: normal;
+}
+.sourceCode {
+background-color: transparent;
+overflow: visible;
+}
+hr {
+border: none;
+border-top: 1px solid #1a1a1a;
+height: 1px;
+margin: 1em 0;
+}
+table {
+margin: 1em 0;
+border-collapse: collapse;
+width: 100%;
+overflow-x: auto;
+display: block;
+font-variant-numeric: lining-nums tabular-nums;
+}
+table caption {
+margin-bottom: 0.75em;
+}
+tbody {
+margin-top: 0.5em;
+border-top: 1px solid #1a1a1a;
+border-bottom: 1px solid #1a1a1a;
+}
+th {
+border-top: 1px solid #1a1a1a;
+padding: 0.25em 0.5em 0.25em 0.5em;
+}
+td {
+padding: 0.125em 0.5em 0.25em 0.5em;
+}
+header {
+margin-bottom: 4em;
+text-align: center;
+}
+#TOC li {
+list-style: none;
+}
+#TOC ul {
+padding-left: 1.3em;
+}
+#TOC > ul {
+padding-left: 0;
+}
+#TOC a:not(:hover) {
+text-decoration: none;
+}
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+  <style>
+body {
+font-family: Futura, sans-serif;
+max-width: 60em;
+;
+}
+p {
+text-align: left;
+font-size: large;
+}
+a {
+color: purple;
+}
+#TOC {
+color: purple;
+font-size: 1.25em;
+}
+h1 {
+
+font-size: 2em;
+font-weight: bold;
+color: rgb(66, 0, 66);
+text-align: left;
+padding-top: 1%;
+border-top: 1px solid rgb(66, 0, 66);
+}
+h2 {
+font-size: 1.25em;
+font-weight: bold;
+color: rgb(94, 0, 94);
+
+text-align: left;
+margin: 0;
+margin-top: 1%;
+}
+h3 {
+font-size: 1.25em;
+font-weight: bold;
+font-style: italic;
+color: rgb(114, 0, 114);
+
+text-align: left;
+margin-top: 1%;
+}
+h3::before {
+content: "- ";
+font-weight: bold;
+
+}
+code {
+background-color: rgb(245, 245, 245);
+
+}
+pre {
+font-size: 1.1em;
+background-color: rgb(245, 245, 245);
+overflow-y: auto;
+min-width: 60em;
+padding: 1%;
+}
+
+details summary:hover {
+cursor: pointer;
+}
+img {
+max-height: 300px !important;
+}
+table td {
+vertical-align: middle;
+}
+figcaption {
+font-size: 0.8em !important;
+font-style: italic !important;
+}
+.subtitle {
+font-style: italic !important;
+font-size: 1.75em;
+text-align: center !important;
+}
+.date {
+font-size: 0.8em !important;
+}
+.title {
+font-size: 2em;
+font-weight: bold;
+text-align: center;
+}
+.sourceCode {
+background-color: rgb(245, 245, 245);
+
+}
+.boxed {
+padding: 1%;
+margin: 2%;
+border: solid 1px black;
+}
+.redblock {
+background-color: lightpink;
+padding: 2%;
+box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+.yellowblock {
+background-color: rgb(255, 247, 202);
+margin: 1px 0 1px 0;
+box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+border-radius: 20px;
+padding: 1%;
+}
+.redtxt {
+color: red;
+font-weight: bold;
+}
+.columns {
+align-items: center;
+vertical-align: top;
+}
+#maxcode {
+max-height: 500px;
+overflow: auto;
+}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Containers</h1>
+<p class="subtitle">Practical session</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#connexion-to-ifb-cluster" id="toc-connexion-to-ifb-cluster">Connexion to IFB cluster</a></li>
+<li><a href="#connexion-to-compute-node-and-downloading-example-data" id="toc-connexion-to-compute-node-and-downloading-example-data">Connexion
+to compute node and downloading example data</a></li>
+<li><a href="#interacting-with-images" id="toc-interacting-with-images">Interacting with images</a></li>
+<li><a href="#creating-apptainer-images" id="toc-creating-apptainer-images">Creating Apptainer images</a></li>
+<li><a href="#creating-an-apptainer-image-with-the-classify.py-script" id="toc-creating-an-apptainer-image-with-the-classify.py-script">Creating
+an Apptainer image with the <code>classify.py</code> script</a></li>
+</ul>
+</nav>
+<h1 id="connexion-to-ifb-cluster">Connexion to IFB cluster</h1>
+<p>There are two ways for connecting to IFB cluster: SSH and Open on
+demand.</p>
+<ul>
+<li><p>SSH</p>
+<ol type="1">
+<li>First you need to upload your public key to <a href="https://my.cluster.france-bioinformatique.fr/manager2/login" class="uri">https://my.cluster.france-bioinformatique.fr/manager2/login</a></li>
+<li>Then execute the following command line (replace
+<code>mylogin</code> by your IFB cluster login that is available on your
+IFB account):</li>
+</ol></li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-X</span> <span class="at">-o</span> ServerAliveInterval=60 <span class="at">-l</span> mylogin core.cluster.france-bioinformatique.fr</span></code></pre></div>
+<ul>
+<li>Command line explanation:
+<ul>
+<li><code>-X</code>: enable X11 forwarding (for GUI applications)</li>
+<li><code>-o ServerAliveInterval=60</code>: Avoid timeout by sending
+every 60 seconds a message to SSH server</li>
+<li><code>-l mylogin</code>: define the account to use</li>
+</ul></li>
+</ul>
+<p>You can find more information on IFB website: <a href="https://my.cluster.france-bioinformatique.fr/manager2/login" class="uri">https://my.cluster.france-bioinformatique.fr/manager2/login</a></p>
+<ul>
+<li><p>Open on demand</p>
+<ul>
+<li>Use the following link to connect to the IFB On Demand service: <a href="https://ondemand.cluster.france-bioinformatique.fr/" class="uri">https://ondemand.cluster.france-bioinformatique.fr/</a></li>
+<li>You can find more information on IFB website: <a href="https://ifb-elixirfr.gitlab.io/cluster/doc/software/openondemand/" class="uri">https://ifb-elixirfr.gitlab.io/cluster/doc/software/openondemand/</a></li>
+</ul></li>
+</ul>
+<div class="boxed">
+<p><strong>Exercise 1:</strong></p>
+<p>Connect to the IFB cluster using SSH or Open on demand.</p>
+</div>
+<h1 id="connexion-to-compute-node-and-downloading-example-data">Connexion to
+compute node and downloading example data</h1>
+<ol type="1">
+<li>Open a session on a compute node:</li>
+</ol>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">srun</span> <span class="at">--account</span><span class="op">=</span>2557_anf_workflow <span class="at">--pty</span> bash</span></code></pre></div>
+<ol start="2" type="1">
+<li>Create and go to your working directory</li>
+</ol>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> /shared/projects/2557_anf_workflow/participants/<span class="va">$USER</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /shared/projects/2557_anf_workflow/participants/<span class="va">$USER</span></span></code></pre></div>
+<ol start="3" type="1">
+<li>Download example data</li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://gitlab.com/anf-workflow-et-reproductibilite/conteneurs.git</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> conteneurs/data .</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> conteneurs</span></code></pre></div>
+<ol start="4" type="1">
+<li>Display the version of Apptainer</li>
+</ol>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> version</span></code></pre></div>
+<p>→ Now you are ready to start</p>
+<h1 id="interacting-with-images">Interacting with images</h1>
+<p>In this first part of the practical session, we want to execute the
+<a href="https://en.wikipedia.org/wiki/Cowsay">cowsay</a> program using
+Apptainer. The <code>cowsay</code> is just a software that generates
+ASCII art pictures of a cow with a message. As an example, the following
+command line:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">cowsay</span> <span class="st">&quot;ANF Workflow et reproductibilité 2025&quot;</span></span></code></pre></div>
+<p>will produce as output:</p>
+<pre><code> __
+&lt; ANF Workflow et reproductibilité 2025  &gt;
+ --
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||</code></pre>
+<div class="boxed">
+<p><strong>Exercise 2:</strong></p>
+<p>Try to execute the <code>cowsay</code> program. Check that is not
+installed on the IFB cluster.</p>
+</div>
+<p>Now, we download an Apptainer image that contains the
+<code>cowsay</code> program:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> pull docker://ghcr.io/apptainer/lolcow</span></code></pre></div>
+<div class="boxed">
+<p>💡 <strong>Note 1:</strong> We use here a Docker repository as source
+for the image. Apptainer convert the Docker/OCI image in
+Apptainer/Singularity image format (<em>.sif</em> file).</p>
+</div>
+<div class="boxed">
+<p><strong>Exercise 3:</strong></p>
+<p>Download/pull the cowsay Apptainer. Check that a
+<em>lolcow_latest.sif</em> file has been created in your current
+directory.</p>
+</div>
+<p>To execute a single command inside an Apptainer container, we use the
+following command:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec myimage.sif command</span></code></pre></div>
+<div class="boxed">
+<p><strong>Exercise 4:</strong></p>
+<p>Execute cowsay in an Apptainer contain that display “ANF Workflow et
+reproductibilité 2025”</p>
+</div>
+<details>
+<summary>
+Click to see an exercise solution
+</summary>
+<div class="boxed">
+<ul>
+<li>Command line to execute:</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec lolcow_latest.sif cowsay <span class="st">&quot;ANF Workflow et reproductibilité 2025&quot;</span></span></code></pre></div>
+</div>
+</details>
+<div class="boxed">
+<p><strong>Exercise 5:</strong></p>
+<p>Compare the output the <code>id</code>, <code>whoami</code>,
+<code>ls -l</code> and <code>ls -l /</code> commands inside and outside
+a container created using the <em>lolcow_latest.sif</em> image. What are
+the differences? Why there are these differences?</p>
+</div>
+<p>You can also execute the default command within a container:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> run myimage.sif</span></code></pre></div>
+<div class="boxed">
+<p><strong>Exercise 6:</strong></p>
+<p>Execute the default command for the cowsay Apptainer image. Try to
+add additional parameters to the command line.</p>
+</div>
+<details>
+<summary>
+Click to see an exercise solution
+</summary>
+<div class="boxed">
+<ul>
+<li>Command line to execute:</li>
+</ul>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> run lolcow_latest.sif</span></code></pre></div>
+</div>
+</details>
+<p>At last, you can use an Apptainer image in interactive mode. To do
+this use the following command:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">appatainer</span> shell myimage.sif</span></code></pre></div>
+<div class="boxed">
+<p><strong>Exercise 7:</strong></p>
+<p>Create a container from the <em>lolcow_latest.sif</em> image in
+interactive mode. Execute the <code>cowsay</code> command, explore the
+tree directory of the container and try to execute other command in the
+container.</p>
+</div>
+<h1 id="creating-apptainer-images">Creating Apptainer images</h1>
+<p>To create an Apptainer image, you need to write a definition file.
+Definitions files have the same role as Dockerfile, but the syntax is
+very different. Here, in the following example, we define a
+<em>lolcow.def</em> file that will produce an Apptainer image that works
+like the image that we used in the previous section of the practical
+session.</p>
+<pre><code>Bootstrap: docker
+From: ubuntu:24.04
+
+%post
+    apt --yes update
+    apt --yes install cowsay lolcat
+
+%environment
+    export LC_ALL=C
+    export PATH=/usr/games:$PATH
+
+%runscript
+    date | cowsay | lolcat</code></pre>
+<p>We can see one header and 3 sections in this file.</p>
+<p>The header (here the first two lines), define which base image we
+will use. There is many type of <a href="https://apptainer.org/docs/user/1.0/appendix.html#buildmodules">bootstrap
+agents</a>, but the most used are “docker” and “localimage” (for
+existing images saved on your machine). In this example, we will use the
+Docker image for Ubuntu 24.04 as the base for the image you want to
+create.</p>
+<p>The first section <code>%post</code>, contains command are the
+executed for downloading and installing software in the image. The next
+section <code>%environment</code>, define the environment variables that
+will be set when running the container. And the last section, define the
+default command that will be executed when the container is executed
+with <code>apptainer run</code> command.</p>
+<p>You can add many more sections in a definition file, they are
+described in <a href="https://apptainer.org/docs/user/main/definition_files.html">Apptainer
+documentation</a>.</p>
+<p>Once, your definition file is ready, you can create your image with
+the following command line:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> build lolcow.sif lolcow.def</span></code></pre></div>
+<div class="boxed">
+<p><strong>Exercise 8:</strong></p>
+<p>Create an Apptainer image <em>lolcow.sif</em> from the
+<em>lolcow.def</em> file. Execute the created image with the
+<code>apptainer run</code> command.</p>
+</div>
+<details>
+<summary>
+Click to see an exercise solution
+</summary>
+<div class="boxed">
+<ul>
+<li>Writing the <em>lolcow.def</em> file:</li>
+</ul>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="op">&gt;</span> lolcow.def <span class="op">&lt;&lt; EOF</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="st">Bootstrap: docker</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="st">From: ubuntu:24.04</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="st">%post</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="st">    apt --yes update</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="st">    apt --yes install cowsay lolcat</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="st">%environment</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="st">    export LC_ALL=C</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="st">    export PATH=/usr/games:</span><span class="va">$PATH</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="st">%runscript</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="st">    date | cowsay | lolcat</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="op">EOF</span></span></code></pre></div>
+<ul>
+<li>Creation of the <em>lolcow.sif</em> image:</li>
+</ul>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> build lolcow.sif lolcow.def</span></code></pre></div>
+<ul>
+<li>Executing a command inside a container created from the
+<em>lolcow.sif</em> image:</li>
+</ul>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> run lolcow.sif</span></code></pre></div>
+</div>
+</details>
+<h1 id="creating-an-apptainer-image-with-the-classify.py-script">Creating an
+Apptainer image with the <code>classify.py</code> script</h1>
+<p>The following Bash script allows the installation the
+<em>classify.py</em> script on an Ubuntu machine.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># With environment variable no question will be prompt when installing Debian/Ubuntu packages</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">DEBIAN_FRONTEND</span><span class="op">=</span>noninteractive</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Install Python 3 and pip</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="ex">apt</span> update</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="ex">apt</span> install <span class="at">--yes</span> python3 python3-pip wget git</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Install required dependencies of classify.py using pip</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="ex">pip3</span> install <span class="at">--break-system-packages</span> torch==2.9.1 torchvision==0.24.1 <span class="at">--index-url</span> https://download.pytorch.org/whl/cpu</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="ex">pip3</span> install <span class="at">--break-system-packages</span> ftfy==6.3.1 regex==2025.11.3 tqdm==4.67.1</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="ex">pip3</span> install <span class="at">--break-system-packages</span> git+https://github.com/openai/CLIP.git</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Download and install the classify.py in /usr/local/bin</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /tmp</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://gitlab.com/anf-workflow-et-reproductibilite/classify/-/raw/main/classify.py</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> classify.py /usr/local/bin/</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> +x /usr/local/bin/classify.py</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Cleaning</span></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="ex">apt</span> remove <span class="at">--purge</span> <span class="at">--yes</span> wget git</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a><span class="ex">apt</span> clean</span></code></pre></div>
+<div class="boxed">
+<p><strong>Exercise 9:</strong></p>
+<p>Create a definition file named <em>classify.def</em> that contains
+the Bash command for creating a working Apptainer image with the
+<em>classify.py</em> script. Create the <em>classify.sif</em> Apptainer
+image from the <em>classify.def</em> file.</p>
+</div>
+<details>
+<summary>
+Click to see an exercise solution
+</summary>
+<div class="boxed">
+<ul>
+<li>Writing the <em>classify.def</em> file:</li>
+</ul>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="op">&gt;</span> classify.def <span class="op">&lt;&lt; EOF</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="st">Bootstrap: docker</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="st">From: ubuntu:24.04</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="st">%post</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="st">    # With environment variable no question will be prompt when installing Debian/Ubuntu packages</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="st">    export DEBIAN_FRONTEND=noninteractive</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="st">    # Install Python 3 and pip</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="st">    apt update</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="st">    apt install --yes python3 python3-pip wget git</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="st">    # Install required dependencies of classify.py using pip</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="st">    pip3 install --break-system-packages torch==2.9.1 torchvision==0.24.1 --index-url https://download.pytorch.org/whl/cpu</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="st">    pip3 install --break-system-packages ftfy==6.3.1 regex==2025.11.3 tqdm==4.67.1</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a><span class="st">    pip3 install --break-system-packages git+https://github.com/openai/CLIP.git</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a><span class="st">    # Download and install the classify.py in /usr/local/bin</span></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a><span class="st">    cd /tmp</span></span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a><span class="st">    wget https://gitlab.com/anf-workflow-et-reproductibilite/classify/-/raw/main/classify.py</span></span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a><span class="st">    mv classify.py /usr/local/bin/</span></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a><span class="st">    chmod +x /usr/local/bin/classify.py</span></span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a><span class="st">    # Cleaning</span></span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a><span class="st">    apt remove --purge --yes wget git</span></span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a><span class="st">    apt clean</span></span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a><span class="op">EOF</span></span></code></pre></div>
+<ul>
+<li>Creation of the <em>classify.sif</em> image:</li>
+</ul>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> build classify.sif classify.def</span></code></pre></div>
+</div>
+</details>
+<div class="boxed">
+<p>💡 <strong>Note 2:</strong> If the build of the <em>classify.sif</em>
+image fails, you can download this file using the following command:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://gitlab.com/anf-workflow-et-reproductibilite/conteneurs/-/raw/main/apptainer-images/classify.sif</span></code></pre></div>
+</div>
+<p>The following command executes the <code>classify.py</code> script
+with some data.</p>
+<pre><code>classify.py --image data/aussie.png --labels &#39;cat,dog,cute_dog&#39;</code></pre>
+<div class="boxed">
+<p><strong>Exercise 10:</strong></p>
+<p>Execute the previous command in an Apptainer container using the
+previously created <em>classify.sif</em> image.</p>
+</div>
+<details>
+<summary>
+Click to see an exercise solution
+</summary>
+<div class="boxed">
+<ul>
+<li>Command line to execute:</li>
+</ul>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec classify.sif classify.py <span class="at">--image</span> data/aussie.png <span class="at">--labels</span> <span class="st">&#39;cat,dog,cute_dog&#39;</span></span></code></pre></div>
+</div>
+</details>
+<div class="boxed">
+<p><strong>Exercise 11 (Optional):</strong></p>
+<p>Using a Bash loop, process all the images in the <em>data</em>
+directory like in the previous exercise.</p>
+</div>
+<details>
+<summary>
+Click to see an exercise solution
+</summary>
+<div class="boxed">
+<ul>
+<li>Command line to execute:</li>
+</ul>
+<div class="sourceCode" id="cb25"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> data/<span class="pp">*</span>.png<span class="kw">;</span> <span class="cf">do</span> </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="at">-ne</span> <span class="st">&quot;</span><span class="va">$f</span><span class="st">\t&quot;</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">apptainer</span> exec classify.sif classify.py <span class="at">--image</span> <span class="st">&quot;</span><span class="va">$f</span><span class="st">&quot;</span> <span class="at">--labels</span> <span class="st">&#39;cat,dog,cute_dog&#39;</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+</div>
+</details>
+</body>
+</html>

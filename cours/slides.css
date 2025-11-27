@@ -1,0 +1,182 @@
+<style>
+.slides {
+     /* this em defines the whole doc */
+    font-size: 0.5em;
+    text-align: justify;
+}
+
+.slides .intro {
+
+    font-size: 1em;
+    text-align: justify;
+
+}
+.slides .slide,.level1 {
+    vertical-align: top;
+}
+
+.slides p {
+    text-align: left;
+}
+
+.slides a {
+    color: purple;
+}
+
+.slides h1 {
+     /* this em is relative to the size of .slides! */
+    font-size: 2em; 
+    font-weight: bold;
+    color: rgb(66, 0, 66);
+    text-align: left;
+}
+
+.slides h2 {
+    font-size: 1.25em; 
+    font-weight: bold;
+    color: rgb(94, 0, 94);
+    font-style: italic; 
+    text-align: left;
+}
+
+.slides h3 {
+    font-size: 1em; 
+    font-weight: bold;
+    color: rgb(114, 0, 114);
+    /* text-decoration: underline; */
+    text-align: left;
+}
+
+.slides .title {
+    /* font-size: 5em; */
+    font-weight: bold;
+    text-align: center;
+}
+
+.slides code {
+    background-color: rgb(230, 230, 230);
+    font-size: 0.9em;
+    word-wrap: nowrap; 
+    width: max-content;
+   
+}
+
+.sourceCode {
+    background-color: rgb(230, 230, 230);
+    font-size: 1.2em;
+    word-wrap: nowrap;
+    width: max-content;
+
+}
+
+
+.slides pre {
+    font-size: 0.8em;
+    width: max-content;
+    white-space: nowrap;
+}
+
+.reveal ul {
+    display: block;
+}
+
+.reveal ol {
+    display: block;
+}
+
+.reveal pre {
+    margin: 0;
+    max-height: 100%;
+}
+
+img {
+    max-height: 400px !important;
+}
+
+table td {
+    vertical-align: middle;
+}
+
+figcaption {
+    font-size: 0.8em !important;
+    font-style: italic !important;
+}
+
+.subtitle {
+    font-style: italic !important;
+    font-size: 1.75em;
+    text-align: center !important;
+}
+
+.date {
+    font-size: 0.8em !important;
+}
+
+.controls-arrow{
+  color:black;
+}
+
+.redblock{
+    background-color: lightpink;
+    padding: 2%;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.yellowblock{
+    background-color: rgb(255, 247, 202);
+    padding: 2%;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.redtxt{
+    color: red;
+    font-weight: bold;
+}
+
+.yellowhighlight{
+    background-color: yellow;
+    font-weight: bold;
+}
+
+.columns .column{
+    min-width: fit-content;
+}
+/* .reveal section {
+    font-size: 0.5em;
+} */
+
+.table_content {
+    font-size: 1.5em;
+}
+
+
+table, td {
+    border: none !important;
+}
+ 
+.col80 {
+    width: 80% !important;
+    float: left;
+  }
+
+
+.col60 {
+    width: 60% !important;
+    float: left;
+  }
+  
+.col40 {
+    width: 40% !important;
+    float: left;
+}
+
+.col30 {
+    width: 30% !important;
+    float: left;
+}
+  
+.col50 {
+    width: 50% !important;
+    float: left;
+}
+</style>
