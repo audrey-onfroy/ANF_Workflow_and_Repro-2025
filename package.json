@@ -5,3 +5,11 @@
   "semantic-release": "^24.2.9",
   "semantic-release-replace-plugin": "^1.2.0"
 }
+{
+  "scripts": {
+    "semantic-release": "semantic-release"
+  }
+}
+{
+  "version": "0.0.0-development"
+}
